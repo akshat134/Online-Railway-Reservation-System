@@ -1,0 +1,10 @@
+.top-navbar {
+    background-color: #d1dae4; 
+    position: sticky !important;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+}
+form label, form input {
+    width: 100%;
+}

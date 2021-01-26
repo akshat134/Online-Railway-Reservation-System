@@ -1,0 +1,15 @@
+.top-navbar {
+    background-color: #d1dae4; 
+    position: sticky !important;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+}
+.feedbackDiv table tr td:nth-child(1) {
+    font-weight: bold; 
+    width: 30%; 
+    border-right: 1px solid #dee2e6;
+}
+.feedbackDiv table tr td {
+    padding-left: 30px;
+}

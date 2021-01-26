@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RRS</title>
+    <link rel="icon" href="/imgs/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../css/home.css">
+    <link rel="stylesheet" type="text/css" href="../../css/profile.css">
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-light fixed navbar-expand-md top-navbar">
+        <a class="navbar-brand" href="#">
+            <img src="/imgs/logo.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+            Railway Reservation System
+        </a>
+		<button class="navbar-toggler" data-toggle="collapse" data-target="#navLinks" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+        </button>
+		<div class="collapse navbar-collapse " id="navLinks">
+			  <ul class="nav navbar-nav ml-auto">
+				<% if(!currentUser){ %>
+					<li class="nav-item"><a href="/login" style="margin:10px;">Login</a></li>
+				<%}else{%>
+				  <li class="nav-item"><a href="/show/<%=currentUser.username%>" style="margin:10px;">Signed In As <%=currentUser.username%></a></li>
+					<li class="nav-item"><a href="/logout" style="margin:10px;">Logout</a></li>
+				<%}%>
+			  </ul>
+			</div>
+    </nav>
+	<div class="container">
+		<%if(error && error.length > 0){%>
+			<div class="alert alert-danger" role="alert">
+				<%= error %>
+			</div>
+		<%}%>
+		<%if(success && success.length > 0){%>
+			<div class="alert alert-success" role="alert">
+				<%= success %>
+			</div>
+		<%}%>
+			
+	</div>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RRS</title>
+    <link rel="icon" href="/imgs/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../css/home.css">
+    <link rel="stylesheet" type="text/css" href="../../css/profile.css">
+    <link rel="stylesheet" type="text/css" href="../../css/admin.css">
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-light fixed navbar-expand-md top-navbar">
+        <a class="navbar-brand" href="#">
+            <img src="/imgs/logo.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+            Railway Reservation System
+        </a>
+		<button class="navbar-toggler" data-toggle="collapse" data-target="#navLinks" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+        </button>
+		<div class="collapse navbar-collapse " id="navLinks">
+			<ul class="nav navbar-nav ml-auto">
+				<li class="nav-item"><a href="" style="margin:10px;">Signed In As Admin</a></li>
+				<li class="nav-item"><a href="/logout" style="margin:10px;">Logout</a></li>
+			</ul>
+		</div>
+    </nav>
+	<div class="container">
+		<%if(error && error.length > 0){%>
+			<div class="alert alert-danger" role="alert">
+				<%= error %>
+			</div>
+		<%}%>
+		<%if(success && success.length > 0){%>
+			<div class="alert alert-success" role="alert">
+				<%= success %>
+			</div>
+		<%}%>
+			
+    </div>
+    
+    <div class="sidenav">
+        <span>Users</span>
+        <span>Trains</span>
+        <span>Add Train</span>
+        <span>Delete Train </span>
+        <span>Feedbacks</span>           
+    </div>
+
+    <div class="container main">
+        <div id="displayUsers" class="row" style="display: none;">
+            <% users.forEach(function (user) { %>
+                <div style="background-color: #f8f9fa; margin-bottom: 40px; width: 100%;">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Name</th>
+                                <th>Email ID</th>
+                                <th>Password</th>
+                                <th>Mobile No.</th>
+                                <th>Age</th>
+                                <th>Gender</th>
+                                <th>Balance</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><%= user.username %></td>
+                                <td><%= user.name %></td>
+                                <td><%= user.email %></td>
+                                <td><%= user.password %></td>
+                                <td><%= user.mobile %></td>
+                                <td><%= user.age %></td>
+                                <td><%= user.gender %></td>
+                                <td>&#8377 <%= user.balance %></td>
+                                <td><button class="updateUserButton btn btn-secondary">Update</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <form method="POST" action="../adminUpdateUser" style="display: none; margin : 0 40px 20px 40px;">
+                        <input style="display: none;" type="text" name="oldusername" value="<%= user.username %>">
+                        <label>Username : <input type="text" name="username" value="<%= user.username %>"></label>
+                        <label>Name : <input type="text" name="name" value="<%= user.name %>"></label>
+                        <label>Password : <input type="text" name="password" value="<%= user.password %>"></label>
+                        <label>Email ID : <input type="text" name="email" value="<%= user.email %>"></label>
+                        <label>Mobile Number : <input type="number" name="mobile" value=<%= user.mobile %>></label>
+                        <label>Age : <input type="number" name="age" value=<%= user.age %>></label>
+                        <label>Gender : <input type="text" name="gender" value="<%= user.gender %>"></label>
+                        <input class="btn btn-primary" type="submit" value="Update Details">
+                    </form>
+
+                    <div class="col-md-12"><h4>Bookings of <%= user.username %></h4></div>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Train Name</th>
+                                <th>Train Number</th>
+                                <th>Source</th>
+                                <th>Destination</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Duration</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% user.bookings.forEach(function (booking) { %>
+                                <tr class="active">
+                                    <td><%= booking.name %></td>
+                                    <td><%= booking.number %></td>
+                                    <td><%= booking.source %></td>
+                                    <td><%= booking.destination %></td>
+                                    <td><%= booking.date %></td>
+                                    <td><%= booking.time %></td>
+                                    <td><%= booking.duration %></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+                
+            <% }) %>
+        </div>
+
+        <div class="row" id="displayTrains" style="display: none;">
+            <% trains.forEach(function (train) { %>
+                <div style="background-color: #f8f9fa; margin-bottom: 40px; width: 100%;"> 
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Number</th>
+                                <th>Source</th>
+                                <th>Destination</th>
+                                <th>Seats</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Fare</th>
+                                <th>Duration</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><%= train.name %></td>
+                                <td><%= train.number %></td>
+                                <td><%= train.source %></td>
+                                <td><%= train.destination %></td>
+                                <td><%= train.seats %></td>
+                                <td><%= train.date %></td>
+                                <td><%= train.time %></td>
+                                <td><%= train.fare %></td>
+                                <td><%= train.duration %></td>
+                                <td><button class="updateTrainButton btn btn-secondary">Update</button></td>
+                            </tr>
+                        </tbody>
+                    </table> 
+
+                    <form method="POST" action="../adminUpdateTrain" style="display: none; margin : 0 40px 20px 40px;">
+                        <input style="display: none;" type="text" name="oldtrainnumber" value="<%= train.number %>">
+                        <label>Train Name : <input type="text" name="name" value="<%= train.name %>"></label>
+                        <label>Train Number : <input type="number" name="number" value="<%= train.number %>"></label>
+                        <label>Source : <input type="text" name="source" value="<%= train.source %>"></label>
+                        <label>Destination : <input type="text" name="destination" value="<%= train.destination %>"></label>
+                        <label>Seats : <input type="number" name="seats" value="<%= train.seats %>"></label>
+                        <label>Date : <input type="text" name="date" value="<%= train.date %>"></label>
+                        <label>Time : <input type="text" name="time" value="<%= train.time %>"></label>
+                        <label>Fare : <input type="number" name="fare" value="<%= train.fare %>"></label>
+                        <label>Duration : <input type="text" name="duration" value="<%= train.duration %>"></label>
+                        <input class="btn btn-primary" type="submit" value="Update Details">
+                    </form> 
+                </div>
+            <% }) %> 
+        </div>
+
+        <div class="row" id="addTrain" style="display: none;">
+            <div style="background-color: #f8f9fa; margin-bottom: 40px; width: 100%; padding-top: 30px; padding-bottom: 30px;">
+                <form method="POST" action="../addTrain" style="margin : 0 40px 20px 40px;">
+                    <label>Train Name : <input type="text" name="name"></label>
+                    <label>Train Number : <input type="number" name="number"></label>
+                    <label>Source : <input type="text" name="source"></label>
+                    <label>Destination : <input type="text" name="destination"></label>
+                    <label>Seats : <input type="number" name="seats" min="1"></label>
+                    <label>Date : <input type="text" name="date"></label>
+                    <label>Time : <input type="text" name="time"></label>
+                    <label>Fare : <input type="number" name="fare" min="1"></label>
+                    <label>Duration : <input type="text" name="duration"></label>
+                    <button style="width: 100%;" class="btn btn-success">Add New Train</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row" id="deleteTrain" style="display: none;">
+            <div class="col-md-12"><h4>Choose the train which you wish to delete.</h4></div>
+
+            <% trains.forEach(function (train) { %>
+                <div style="background-color: #f8f9fa; margin-bottom: 40px; width: 100%;"> 
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Number</th>
+                                <th>Source</th>
+                                <th>Destination</th>
+                                <th>Seats</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Fare</th>
+                                <th>Duration</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><%= train.name %></td>
+                                <td><%= train.number %></td>
+                                <td><%= train.source %></td>
+                                <td><%= train.destination %></td>
+                                <td><%= train.seats %></td>
+                                <td><%= train.date %></td>
+                                <td><%= train.time %></td>
+                                <td><%= train.fare %></td>
+                                <td><%= train.duration %></td>
+                                <td><button class="deleteTrainButton btn btn-danger">Delete</button></td>
+                            </tr>
+                        </tbody>
+                    </table> 
+
+                    <!-- <div style="display: none;" class="col-md-12">
+                        <h4 style="color: red;">Do you wish to delete the selected train?</h4>
+                        <label><input name="confirm" id="yes" type="radio"/> Yes </label>
+                        <label><input name="confirm" id="no" type="radio"/> No </label>
+                    </div> -->
+                    <form method="POST" action="../deleteTrain" style="display: none;">
+                        <input type="number" name="number" value="<%= train.number %>"/>
+                        <input type="text" name="name" value="<%= train.name %>"/>
+                        <input type="submit">
+                    </form>
+                    
+                </div>
+            <% }) %>
+
+        </div>
+
+        <div class="row" id="displayFeedbacks" style="display: none; margin-top: 40px;">
+            <% feedbacks.forEach(function (feedback) { %>
+                <div class="feedbackDiv" style="background-color: #f8f9fa; margin-bottom: 40px; width: 100%;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>Username</th>
+                                <td><%= feedback.username %></td>
+                            </tr>
+                            <tr>
+                                <td>Name</th>
+                                <td><%= feedback.name %></td>
+                            </tr>
+                            <tr>
+                                <td>Rating</th>
+                                <td><%= feedback.rating %></td>
+                            </tr>
+                            <tr>
+                                <td>Comments</th>
+                                <td><%= feedback.comments %></td>
+                            </tr>
+                        </thead>
+                    </table>
+                </div> 
+            <% }) %>
+        </div>
+            <!-- <% trains.forEach(function (train) { %>
+                <%= train.name %> 
+            <% }) %> -->
+        
+    </div>
+
+
+    <script>
+        // Timeout for alert
+        var alert = document.querySelector(".alert");
+        var nav = document.querySelector(".sidenav");
+        if(alert){
+            setTimeout(function(){
+                alert.style.display = "none";
+                nav.style.top = "80px";
+            }, 3000);
+        }
+        else{
+            setTimeout(function(){
+                nav.style.top = "80px";
+            }, 0);
+        }
+
+        // Update User Functionality
+        updateButton = document.querySelectorAll(".updateUserButton");
+
+        updateButton.forEach(btn => btn.addEventListener('click', event => {
+            var button = event.target;
+            var parent = button.parentNode.parentNode.parentNode.parentNode.parentNode;
+            var children = parent.children;
+            console.log(children[2].innerHTML);
+            if(children[1].style.display === "none"){
+                children[1].style.display = "block";
+                children[2].style.display = "none";
+                children[3].style.display = "none";
+            }
+            else{
+                children[1].style.display = "none";
+                children[2].style.display = "block";
+                children[3].style.display = "table";
+            }
+        }));
+
+        // Update Train Functionality
+        updateTrainButton = document.querySelectorAll(".updateTrainButton");
+
+        updateTrainButton.forEach(btn => btn.addEventListener('click', event => {
+            var button = event.target;
+            var parent = button.parentNode.parentNode.parentNode.parentNode.parentNode;
+            var children = parent.children;
+            console.log(children[1].innerHTML);
+            if(children[1].style.display === "none"){
+                children[1].style.display = "block";
+            }
+            else{
+                children[1].style.display = "none";
+            }
+        }));    
+
+        // Delete Train Functionality
+        deleteTrainButton = document.querySelectorAll(".deleteTrainButton");
+
+        deleteTrainButton.forEach(btn => btn.addEventListener('click', event => {
+            var button = event.target;
+            var parent = button.parentNode.parentNode.parentNode.parentNode.parentNode;
+            var children = parent.children;
+            console.log(children[1].innerHTML);
+            var inputs = children[1].children;
+            inputs[2].click();
+        }));
+
+        // Sidebar
+        var index = -1;
+        var arr = ["displayUsers", "displayTrains", "addTrain", "deleteTrain", "displayFeedbacks"];
+        var hyperlinks = document.querySelector(".sidenav").children;
+        console.log(hyperlinks);
+        hyperlinks[0].addEventListener("click", function(){
+            document.getElementById(arr[0]).style.display = "flex";
+            if(index === -1){
+                hyperlinks[0].classList.add("clicked");
+                index = 0;
+            }
+            else{
+                document.getElementById(arr[index]).style.display = "none";
+                hyperlinks[index].classList.remove("clicked");
+                hyperlinks[0].classList.add("clicked");
+                index = 0;
+            }
+        })
+        hyperlinks[1].addEventListener("click", function(){
+            document.getElementById(arr[1]).style.display = "flex";
+            if(index === -1){
+                hyperlinks[1].classList.add("clicked");
+                index = 1;
+            }
+            else{
+                document.getElementById(arr[index]).style.display = "none";
+                
+                hyperlinks[index].classList.remove("clicked");
+                hyperlinks[1].classList.add("clicked");
+                index = 1;
+            }
+
+        })
+        hyperlinks[2].addEventListener("click", function(){
+            document.getElementById(arr[2]).style.display = "flex";
+            if(index === -1){
+                hyperlinks[2].classList.add("clicked");
+                index = 2;
+            }
+            else{
+                document.getElementById(arr[index]).style.display = "none";
+                hyperlinks[index].classList.remove("clicked");
+                hyperlinks[2].classList.add("clicked");
+                index = 2;
+            }
+        })
+        hyperlinks[3].addEventListener("click", function(){
+            document.getElementById(arr[3]).style.display = "flex";
+            if(index === -1){
+                hyperlinks[3].classList.add("clicked");
+                index = 3;
+            }
+            else{
+                document.getElementById(arr[index]).style.display = "none";
+                hyperlinks[index].classList.remove("clicked");
+                hyperlinks[3].classList.add("clicked");
+                index = 3;
+            }
+        })
+        hyperlinks[4].addEventListener("click", function(){
+            document.getElementById(arr[4]).style.display = "flex";
+            if(index === -1){
+                hyperlinks[4].classList.add("clicked");
+                index = 4;
+            }
+            else{
+                document.getElementById(arr[index]).style.display = "none";
+                hyperlinks[index].classList.remove("clicked");
+                hyperlinks[4].classList.add("clicked");
+                index = 4;
+            }
+        })
+
+    </script>
+
+
+<%- include("partials/footer") %> 

@@ -1,0 +1,467 @@
+<%- include("partials/header") %>   
+
+    <!-- main body -->
+
+    <div class="sidenav">
+        <span>User Info</span>
+        <span>Check Status</span>
+        <span>Make Reservation</span>
+        <span>Feedback</span>
+        <span>Contact</span>
+    </div>
+
+    <div class="container main">
+        <div id="userInfo" class="row" style="display: none;">
+            <div class="col-md-3">
+                <img id="avatar" src="../imgs/iavatar.png" alt="User Avatar" />
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <% if(user.name === "NA"){ }else{%>
+                    <h4><%- user.name %></h4>
+                    <% } %>
+                
+                </div>
+                <div class="row">
+                    <% if(user.email === "NA"){ }else{%>
+                    <h4><%- user.email %></h4> 
+                    <% } %>
+                </div>
+                <div class="row">
+                    <% if(user.mobile === 0){ }else{%>
+                    <h4><%- user.mobile %></h4> 
+                    <% } %>
+                </div>
+                <div class="row">
+                    <% if(user.gender === "NA"){ }else{%>
+                    <h4><%- user.gender %></h4> 
+                    <% } %>
+                </div>
+                <div class="row">
+                    <% if(user.age === 0){ }else{%>
+                    <h4><%- user.age %></h4>
+                    <% } %>
+                </div>
+                <div class="row">
+                    <h4>&#8377 <%= user.balance %></h4>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-secondary" id="edit">Edit Details</button>
+                <button class="btn btn-primary" id="addMoney">Add Money</button>
+                <form style="display: none;" id="addMoneyForm" action="../addMoney" method="POST">
+                    <input type="number" name="money">
+                    <input style="display: none;" type="text" name="username" value="<%= user.username %>">
+                    <input style="margin-top: 10px;" class="btn btn-success" type="submit" value="Add">
+                </form>
+            </div>
+
+            <div class="col-md-3"></div>
+
+            <div class="col-md-6" id="userEditDetails">
+
+                <label style="display: none;">Enter password to continue : <input id="checkPassword" type="password" /> </label>
+                <input style="display: none;" id="validatePassword" type="submit" value="Go!"></button>
+
+                <form style="display: none;" id="editUserInfo" action="../editDetails" method="POST">
+                    <label>Username : <input type="text" name="username" value="<%= user.username %>" readonly></label>
+                    <label>Name : <input type="text" name="name" value="<%= user.name %>"></label>
+                    <label>Password : <input type="text" name="password" value="<%= user.password %>"></label>
+                    <label>Email ID : <input type="text" name="email" value="<%= user.email %>"></label>
+                    <label>Mobile Number : <input type="number" name="mobile" value=<%= user.mobile %>></label>
+                    <label>Age : <input type="number" name="age" value=<%= user.age %>></label>
+                    <label>Gender : <input type="text" name="gender" value="<%= user.gender %>"></label>
+                    <input class="btn btn-primary" type="submit" value="Update Details">
+                </form>
+            </div>
+        </div>
+
+        <div class="row" id="checkStatus" style="display: none;">
+            <h3 id="statusHeading"></h3>
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Number</th>
+                    <th>Source</th>
+                    <th>Destination</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Duration</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="bookingsTable">
+                    
+                    <% user.bookings.forEach(function (booking) { %>
+                        <tr class="active">
+                            <td><%= booking.name %></td>
+                            <td><%= booking.number %></td>
+                            <td><%= booking.source %></td>
+                            <td><%= booking.destination %></td>
+                            <td><%= booking.date %></td>
+                            <td><%= booking.time %></td>
+                            <td><%= booking.duration %></td>
+                            <td><button class="cancelReservationButton btn btn-danger">Cancel Reservation</button></td>
+                        </tr>
+                    <% }) %>
+                    
+                </tbody>
+            </table>
+
+            <form method="POST" action="../cancelReservation" style="display: none;">
+                <input type="number" name="number" />
+                <input type="text" name="username" value="<%= user.username %>"/>
+                <input type="submit">
+            </form>
+
+        </div>
+
+        <div class="row" id="makeReservation" style="display: none;">
+            <div class="col-md-12">
+                <select id="destinationList">
+                    <option value="0">Select Destination</option>
+                    <% var array = []; trains.forEach(function (train) { %>
+                    <% array.push(train.destination) %>
+                    <% }) %>
+                    <% var destinations = new Set(array); var setSize = destinations.size; var destArr = destinations.entries(); %>
+                    <% for(var i = 0; i < setSize; i++){ %>
+    
+                        <option value="<%= i + 1 %>"><%= destArr.next().value[0] %></option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="col-md-12">
+                <button style="margin-top: 20px; margin-bottom: 20px;" class="btn btn-primary" onclick="reservation()">Choose this Destination</button>
+            </div>
+            
+            <div class="makeReservationList col-md-12" style="display: none;">
+                <h3>Following are the trains with the selected destination</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Number</th>
+                            <th>Source</th>
+                            <th>Destination</th>
+                            <th>Seats</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Fare</th>
+                            <th>Duration</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="reservationList">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12" id="confirmation" style="display: none;">
+                <h4>Do you confirm your booking?</h4>
+                <form style="margin-left: 20px;">
+                    <a id="yes" class="btn btn-success"> Yes </a>
+                    <a id="no" class="btn btn-danger"> No </a>
+                  </form>
+            </div>
+            <form id="reserveForm" action="../reservation" method="POST" style="display: none;"> 
+                <input name="name" type="text">
+                <input name="number" type="number">
+                <input name="source" type="text">
+                <input name="destination" type="text">
+                <input name="seats" type="number">
+                <input name="date" type="text">
+                <input name="time" type="text">
+                <input name="fare" type="number">
+                <input name="duration" type="text">
+                <input name="username" value = "<%= user.username %>" >
+                <input type="submit"> Submit
+            </form>
+            
+        </div>
+
+        <div class="row" id="feedback" style="display: none;">
+            <form action="../feedback" method="POST" style="margin-left: 50px; margin-right: 50px;">
+                <label> Username : <input type="text" name="username" value="<%= user.username %>" readonly></label>
+                <label> Name : <input type="text" name="name" value="<%= user.name %>" readonly></label>
+                <label> Please rate your experience on a scale of 1 to 10 : <input type="number" name="rating" min="1" max="10"></label>
+                <label> Any additional comments : <textarea rows="5" name="comments"></textarea></label>
+                <input class="btn btn-primary" type="submit" value="Submit Feedback"/>
+            </form>
+        </div>
+
+        <div class="row" id="contact" style="display: none; margin-top: 40px;">
+            <div class="col-md-2"></div>
+            <div class="col-md-4" style=" background-color: #f8f9fa; padding: 40px 0px 40px 45px; margin-right: 40px;">
+                <h4>Akshat Thapliyal</h4>
+                <h4>Email : <br> <a href = "mailto:akshat13400@gmail.com">akshat13400@gmail.com</a> </h4>
+                <h4>Mobile : <br> <a href = "tel:9868503684">+91 9868503684</a></h4>
+            </div>
+            <div class="col-md-4" style=" background-color: #f8f9fa; padding: 40px 0px 40px 45px;">
+                <h4>Abhishek Rajput</h4>
+                <h4>Email : <br> <a href = "mailto:arajput1999@gmail.com">arajput1999@gmail.com</a> </h4>
+                <h4>Mobile : <br> <a href = "tel:+97180 36505">+91 97180 36505</a></h4>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+            <!-- <% trains.forEach(function (train) { %>
+                <%= train.name %> 
+            <% }) %> -->
+        
+    </div>
+
+    <script>
+        setTimeout(function(){
+            var alert = document.querySelector(".alert");
+            var nav = document.querySelector(".sidenav");
+            alert.style.display = "none";
+            nav.style.top = "80px";
+        }, 3000);
+
+        console.log(<%-user.bookings%>);
+
+        // User Info
+        var info = document.getElementById("userInfo").children;
+        var userInfo = document.getElementById("userInfo");
+        var edit = document.getElementById("edit");
+        var editChildren = document.getElementById("userEditDetails").children;
+        edit.addEventListener("click", function(){
+            if(editChildren[0].style.display === "none"){
+                editChildren[0].style.display = "inline-block";
+                editChildren[1].style.display = "inline-block";
+            }
+            else{
+                editChildren[0].style.display = "none";
+                editChildren[1].style.display = "none";
+            }
+        })
+        var passButton = document.getElementById("validatePassword");
+        var passCheck = document.getElementById("checkPassword");
+        var editInfo = document.getElementById("editUserInfo");
+        var editDiv = document.getElementById("userEditDetails");
+        passButton.addEventListener("click", function(){
+            if(passCheck.value === <%-JSON.stringify(user.password) %>){
+                editInfo.style.display = "inline-block";
+                editChildren[0].style.display = "none";
+                editChildren[1].style.display = "none";
+                info[0].style.display = "none";
+                info[1].style.display = "none";
+                info[2].style.display = "none";
+                userInfo.style.paddingBottom = "50px";
+                userInfo.style.paddingTop = "20px";
+            }
+            else{
+                var prompt = document.createElement("h4");
+                prompt.innerHTML = "Wrong Password! Please retry.";
+                prompt.style.color = "red";
+                console.log(prompt);
+                editDiv.appendChild(prompt);
+                setTimeout(function(){
+                    editDiv.removeChild(prompt);
+                }, 2000);
+            }
+        })
+
+        var addMoneyBtn = document.getElementById("addMoney");
+        var addMoneyForm = document.getElementById("addMoneyForm");
+        addMoneyBtn.addEventListener("click", function(){
+            if(addMoneyForm.style.display === "none"){
+                addMoneyForm.style.display = "block";
+            }
+            else{
+                addMoneyForm.style.display = "none";
+            }
+        })
+
+        // Check Status Heading 
+        var bookings = <%-JSON.stringify(user.bookings)%>;
+        if(bookings.length === 0){
+            document.getElementById("statusHeading").innerHTML = "No Bookings Yet";
+        }
+        else{
+            document.getElementById("statusHeading").innerHTML = "Details of all the bookings";
+        }
+
+        // Cancel Reservation
+        cancelReservationButton = document.querySelectorAll(".cancelReservationButton");
+
+        cancelReservationButton.forEach(btn => btn.addEventListener('click', event => {
+            var button = event.target;
+            var parent = button.parentNode.parentNode.parentNode.parentNode.parentNode;
+            var par = button.parentNode.parentNode;
+            var number = par.children[1].innerHTML;
+            var children = parent.children;
+            // console.log(children[1].innerHTML);
+            var inputs = children[2].children;
+            inputs[0].value = parseInt(number);
+            inputs[2].click();
+        }));
+
+        
+        // Make Reservation
+        function reservation(){
+            var idx = document.getElementById("destinationList").options.selectedIndex;
+            if(idx !== 0){
+                document.querySelector(".makeReservationList").style.display = "block";
+                var selected = document.getElementById("destinationList").options[idx].text;
+                var trains = <%-JSON.stringify(trains)%>;
+                trains.forEach(train => {
+                    if(train.destination === selected){
+                        var tbody = document.getElementById("reservationList");
+                        var row = document.createElement("tr");
+                        var name = document.createElement("td");
+                        var number = document.createElement("td");
+                        var source = document.createElement("td");
+                        var destination = document.createElement("td");
+                        var seats = document.createElement("td");
+                        var date = document.createElement("td");
+                        var time = document.createElement("td");
+                        var fare = document.createElement("td");
+                        var duration = document.createElement("td");
+                        var select = document.createElement("td");
+                        var button = document.createElement("button");
+                        name.innerHTML = train.name;
+                        number.innerHTML = train.number;
+                        source.innerHTML = train.source;
+                        destination.innerHTML = train.destination;
+                        seats.innerHTML = train.seats;
+                        date.innerHTML = train.date;
+                        time.innerHTML = train.time;
+                        fare.innerHTML = train.fare;
+                        duration.innerHTML = train.duration;
+                        button.innerHTML = "Select";
+                        button.classList.add("selectedButtonDestination");
+                        button.classList.add("btn");
+                        button.classList.add("btn-secondary");
+                        select.appendChild(button);
+                        row.appendChild(name);
+                        row.appendChild(number);
+                        row.appendChild(source);
+                        row.appendChild(destination);
+                        row.appendChild(seats);
+                        row.appendChild(date);
+                        row.appendChild(time);
+                        row.appendChild(fare);
+                        row.appendChild(duration);
+                        row.appendChild(select);
+                        tbody.appendChild(row);
+                    }
+                });
+                document.querySelectorAll('.selectedButtonDestination').forEach(item => {
+                    item.addEventListener('click', event => {
+                        var td = item.parentElement;
+                        var row = td.parentElement;
+                        var data = row.children;
+                        console.log(data);
+                        document.getElementById("confirmation").style.display = "flex";
+                        // Reservation Confirmation
+                        var y = document.getElementById("yes");
+                        var n = document.getElementById("no");
+                        y.addEventListener("click", function(){
+                            var form = document.getElementById("reserveForm");
+                            var inputs = form.children;
+                            console.log(inputs);
+                            inputs[0].value = data[0].innerHTML;
+                            inputs[1].value = parseInt(data[1].innerHTML);
+                            inputs[2].value = data[2].innerHTML;
+                            inputs[3].value = data[3].innerHTML;
+                            inputs[4].value = parseInt(data[4].innerHTML);
+                            inputs[5].value = data[5].innerHTML;
+                            inputs[6].value = data[6].innerHTML;
+                            inputs[7].value = parseInt(data[7].innerHTML);
+                            inputs[8].value = data[8].innerHTML;
+                            console.log(inputs[9].value);
+                            inputs[10].click();
+                        })
+                        n.addEventListener("click", function(){
+                            document.getElementById("confirmation").style.display = "none";
+                            console.log("No");
+                        })
+                        // addData(data);
+                        
+                    })
+                })
+            }
+            else{
+                document.querySelector(".makeReservationList").style.display = "none";
+            }
+        } 
+
+        // Sidebar
+        var index = -1;
+        var arr = ["userInfo", "checkStatus", "makeReservation", "feedback", "contact"];
+        var hyperlinks = document.querySelector(".sidenav").children;
+        console.log(hyperlinks);
+        hyperlinks[0].addEventListener("click", function(){
+            document.getElementById(arr[0]).style.display = "flex";
+            if(index === -1){
+                hyperlinks[0].classList.add("clicked");
+                index = 0;
+            }
+            else{
+                document.getElementById(arr[index]).style.display = "none";
+                hyperlinks[index].classList.remove("clicked");
+                hyperlinks[0].classList.add("clicked");
+                index = 0;
+            }
+        })
+        hyperlinks[1].addEventListener("click", function(){
+            document.getElementById(arr[1]).style.display = "flex";
+            if(index === -1){
+                hyperlinks[1].classList.add("clicked");
+                index = 1;
+            }
+            else{
+                document.getElementById(arr[index]).style.display = "none";
+                
+                hyperlinks[index].classList.remove("clicked");
+                hyperlinks[1].classList.add("clicked");
+                index = 1;
+            }
+
+        })
+        hyperlinks[2].addEventListener("click", function(){
+            document.getElementById(arr[2]).style.display = "flex";
+            if(index === -1){
+                hyperlinks[2].classList.add("clicked");
+                index = 2;
+            }
+            else{
+                document.getElementById(arr[index]).style.display = "none";
+                hyperlinks[index].classList.remove("clicked");
+                hyperlinks[2].classList.add("clicked");
+                index = 2;
+            }
+        })
+        hyperlinks[3].addEventListener("click", function(){
+            document.getElementById(arr[3]).style.display = "flex";
+            if(index === -1){
+                hyperlinks[3].classList.add("clicked");
+                index = 3;
+            }
+            else{
+                document.getElementById(arr[index]).style.display = "none";
+                hyperlinks[index].classList.remove("clicked");
+                hyperlinks[3].classList.add("clicked");
+                index = 3;
+            }
+        })
+        hyperlinks[4].addEventListener("click", function(){
+            document.getElementById(arr[4]).style.display = "flex";
+            if(index === -1){
+                hyperlinks[4].classList.add("clicked");
+                index = 4;
+            }
+            else{
+                document.getElementById(arr[index]).style.display = "none";
+                hyperlinks[index].classList.remove("clicked");
+                hyperlinks[4].classList.add("clicked");
+                index = 4;
+            }
+        })
+        window.alert = function() {
+            console.log("Tried to alert");
+        };
+    </script>
+
+<%- include("partials/footer") %> 

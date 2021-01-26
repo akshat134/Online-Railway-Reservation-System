@@ -1,0 +1,140 @@
+<%- include("partials/header") %>   
+
+    <!-- main body -->
+    <div class="container" style="padding-top: 50px; ">
+        <div class="row">
+            <div class="row">
+                <h1 style="margin-left: 100px; margin-bottom: 50px;">WELCOME TO THE RAILWAY RESERVATION SYSTEM</h1>
+            </div>
+            <!-- left part -->
+            <div class="col-md-6" style="border-right: 1px solid rgb(182, 179, 179);">
+                
+                <div class="row" style="padding-top: 50px; margin-bottom: 50px; margin-right: 20px;">
+                    <div class="col-md-10">
+                        <h2>ADMIN LOGIN</h2> <br>
+                        <form action="/admin" method="POST">
+                            <div class="form-group">
+                                <label for="username" style="font-weight:bold;">Enter your username : </label>
+                                <input type="text" name="username" class="form-control" id="username" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <label for="password" style="font-weight:bold;">Enter your password:</label>
+                                <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+                            </div>
+                            <button type="submit"
+                                style="width: 100%; border: 0px ; background-color: rgb(236, 151, 22);"
+                                class="btn btn-primary">LOGIN</button>
+    
+                        </form>
+                        
+
+                    </div>
+                    
+                </div>
+
+            </div>
+            <!-- left part ends -->
+            <!-- right part -->
+            <div class="col-md-6" style="padding-left: 80px;">
+                <div class="row" style="padding-top: 50px; margin-bottom: 50px;">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+                        <h2>USER LOGIN</h2> <br>
+                        <form action="/login" method="POST">
+                            <div class="form-group">
+                                <label for="username" style="font-weight:bold;">Enter your username : </label>
+                                <input type="text" name="username" class="form-control" id="username" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <label for="password" style="font-weight:bold;">Enter your password:</label>
+                                <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+                            </div>
+                            <button type="submit"
+                                style="width: 100%; border: 0px ; background-color: rgb(236, 151, 22);"
+                                class="btn btn-primary">LOGIN</button>
+    
+                        </form>
+                        <hr>
+                        <p>Not yet signed up?</p>
+                        <button href="#" data-target="#signUp" data-toggle="modal" style="width: 100%; border: 0px ; background-color: rgb(63, 63, 62);" class="btn btn-primary">SIGN UP</button>
+                    <!-- modal for sign up -->
+                        <div class="modal fade" id="signUp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Sign Up here</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="/register" method="POST">
+                                            <div class="form-group">
+                                                <label for="name" style="font-weight:bold;">Enter your Name : </label>
+                                                <input type="text" class="form-control" id="name"
+                                                    placeholder="Name" name="name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="username" style="font-weight:bold;">Enter your username : </label>
+                                                <input type="text" class="form-control" id="username"
+                                                    placeholder="Username" name="username">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password" style="font-weight:bold;">Enter your password : </label>
+                                                <input type="password" class="form-control" id="password"
+                                                    placeholder="Password" name="password">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email" style="font-weight:bold;">Enter your email ID : </label>
+                                                <input type="email" class="form-control" id="email"
+                                                    placeholder="Email ID" name="email">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="mobile" style="font-weight:bold;">Enter your mobile number : </label>
+                                                <input type="number" class="form-control" id="mobile"
+                                                    placeholder="Mobile No." name="mobile" min="1000000000" max="9999999999">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="age" style="font-weight:bold;">Enter your age : </label>
+                                                <input type="number" class="form-control" id="age"
+                                                    placeholder="Age" name="age">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="gender" style="font-weight:bold;">Enter your gender : </label>
+                                                <input type="text" class="form-control" id="gender"
+                                                    placeholder="Gender" name="gender">
+                                            </div>
+                                            <input type="number" value="0" style="display: none;" name="balance">
+                                            <button class="btn btn-primary"
+                                                    style="margin-bottom : 15px; border: 0px ; background-color: rgb(236, 151, 22);">Sign Up</button>
+                                        </form>
+                                            <div class="modal-footer">
+                                                
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                                            </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    
+                </div>
+                <div class="row">
+                    
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+<%- include("partials/footer") %> 

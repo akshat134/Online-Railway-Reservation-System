@@ -1,0 +1,96 @@
+.sidenav {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 260px; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    left: 0;
+    background-color: #d1dae4; 
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
+    padding-bottom: 100%;
+}
+
+.clicked {
+    background-color: #111 !important;
+    color: #e3e3e3 !important;
+}
+
+.clicked:hover {
+    display: block !important;
+}
+  
+/* The navigation menu links */
+.sidenav span {
+    width: auto;
+    position: relative;
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #000;
+    display: block;
+}
+
+.sidenav span:after {
+    content: '';
+    position: absolute;
+    width: 0; height: 3px;
+    display: block;
+    margin-top: 5px;
+    right: 0;
+    background: #000;
+    transition: width .2s ease;
+}
+  
+/* When you mouse over the navigation links, change their color */
+.sidenav span:hover {
+    display: inline-block;
+    /* border-bottom: 1px #000 solid; */
+    cursor: pointer;
+    transition: 0.5s ease;
+}
+
+.sidenav span:hover:after{
+    width: 90%;
+    left: 15px;
+    background: #000;
+}
+  
+/* Style page content */
+.main {
+    margin-left: 270px; /* Same as the width of the sidebar */
+    padding: 40px 20px;
+    font-size: 1.2rem;
+}
+#avatar {
+    width: 100%;
+}
+#userInfo {
+    background-color: #f8f9fa;
+}
+#userInfo .col-md-6 {
+    margin-left: 20px;
+    padding-top: 20px;
+}
+#editUserInfo input, #editUserInfo label, #feedback input, #feedback label, #feedback textarea {
+    width: 100%;
+}
+.col-md-2 button{
+    font-size: 20px;
+    position: relative;
+    right : -100px;
+    top : 25px;
+}
+#addMoney {
+    position: relative;
+    right : 50px;
+    top : -18px;
+}
+#addMoneyForm {
+    width: 80%;
+    position: relative;
+    right: 50px;
+}
+/* .col-md-2 button:hover {
+    cursor: pointer;
+    background-color: #f8f9fa;
+} */
